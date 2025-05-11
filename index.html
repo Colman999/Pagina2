@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Amigos del alma</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      overflow-x: hidden;
+      cursor: pointer;
+    }
+
+    .background {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .background img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .tap-message {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 20px;
+      color: #444;
+    }
+
+    .message-container {
+      display: none;
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .message-container.show {
+      display: block;
+    }
+
+    .message p {
+      font-size: 18px;
+      margin-bottom: 1em;
+    }
+
+    .emoji {
+      position: absolute;
+      animation: float 3s ease-in-out forwards;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    #viewGalleryBtn {
+      display: block;
+      margin: 30px auto;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #ff7ab6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #viewGalleryBtn:hover {
+      background-color: #e064a1;
+    }
+
+    #gallery {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #gallery img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 20px;
+    }
+
+    #gallery video {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body onclick="showMessage()">
+
+  <div class="background">
+    <img src="amigo1.jpg" alt="Amigo 1">
+    <img src="amigo2.jpg" alt="Amigo 2">
+    <img src="amigo3.jpg" alt="Amigo 3">
+    <img src="amigo4.jpg" alt="Amigo 4">
+    <img src="amigo5.jpg" alt="Amigo 5">
+    <img src="amigo6.jpg" alt="Amigo 6">
+    <img src="amigo7.jpg" alt="Amigo 7">
+    <img src="amigo8.jpg" alt="Amigo 8">
+    <img src="amigo9.jpg" alt="Amigo 9">
+    <img src="amigo10.jpg" alt="Amigo 10">
+    <img src="amigo11.jpg" alt="Amigo 11">
+  </div>
+
+  <div id="tapMessage" class="tap-message">
+    Tocá la pantalla para ver el mensaje 💌
+  </div>
+
+  <div id="messageContainer" class="message-container">
+    <div class="message">
+      <p>Perdón si en algún momento te hice sentir mal o te cargué con cosas que no te correspondían, nunca fue mi intención. Solo necesitaba decirte todo esto porque me nace, porque te valoro muchísimo, más de lo que te imaginás.</p>
+      <p>Gracias por estar, por bancarme incluso cuando ni yo me entiendo, por cada abrazo, cada palabra, cada gesto tuyo que, aunque parezca chiquito, para mí es enorme. Me hacés bien, me das calma, y sos ese lugar seguro al que siempre quiero volver.</p>
+      <p>Verte mal me parte, y ojalá pudiera sacarte cada peso que llevás encima. El abrazo de la otra vez lo confirmó todo: me hizo sentir que nos entendemos sin hablar, que nos cuidamos de verdad.</p>
+      <p>Gracias por confiar en mí, por no irte incluso cuando repito lo mismo mil veces. Tu presencia me cura, tus palabras me sostienen, y tu sonrisa es una luz cuando todo se me oscurece.</p>
+      <p>Yo también quiero que esta amistad dure mucho, muchísimo, porque lo que tenemos es especial. Y aunque me cueste explicarme o esté lleno de vueltas en la cabeza, siempre voy a estar para vos, como pueda, como me necesites.</p>
+      <p>Gracias por ser esa persona que llegó sin aviso y terminó siendo un pedazo clave en mi vida. 🫶💗</p>
+    </div>
+
+    <button id="viewGalleryBtn" onclick="showGallery(event)">Ver imágenes 📸</button>
+  </div>
+
+  <div id="gallery">
+    <img id="galleryImage" src="" alt="Galería">
+    <video id="galleryVideo" controls></video>
+  </div>
+
+  <script>
+    const emojis = ['💖', '🌟', '🥰', '✨', '🌈', '💫', '😊', '🎉'];
+    const galleryItems = [
+      'amigo1.jpg',
+      'amigo2.jpg',
+      'amigo3.jpg',
+      'amigo4.jpg',
+      'amigo5.jpg',
+      'amigo6.jpg',
+      'amigo7.jpg',
+      'amigo8.jpg',
+      'amigo9.jpg',
+      'amigo10.jpg',
+      'amigo11.jpg'
+    ];
+    let currentIndex = 0;
+
+    function showMessage() {
+      document.getElementById('messageContainer').classList.add('show');
+      document.getElementById('tapMessage').style.display = 'none';
+
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const emoji = document.createElement('div');
+          emoji.className = 'emoji';
+          emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          emoji.style.left = Math.random() * 100 + 'vw';
+          emoji.style.top = '-50px';
+          emoji.style.fontSize = (Math.random() * 24 + 16) + 'px';
+          document.body.appendChild(emoji);
+
+          setTimeout(() => emoji.remove(), 3000);
+        }, i * 100);
+      }
+    }
+
+    function showGallery(event) {
+      event.stopPropagation();
+      const gallery = document.getElementById('gallery');
+      const img = document.getElementById('galleryImage');
+      const video = document.getElementById('galleryVideo');
+      gallery.style.display = 'flex';
+      currentIndex = 0;
+
+      function showNext() {
+        const item = galleryItems[currentIndex];
+        img.style.display = 'block';
+        img.src = item;
+        video.style.display = 'none';
+
+        setTimeout(() => {
+          currentIndex++;
+          if (currentIndex < galleryItems.length) {
+            showNext();
+          } else {
+            gallery.style.display = 'none';
+          }
+        }, 3000);
+      }
+
+      showNext();
+    }
+  </script>
+</body>
+</html>
+
+
